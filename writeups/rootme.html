@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yashwardhan Laharia</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+
+  <!--favicon-img-->
+  <link rel="icon" type="image/png" href="../images/rootme/banner.png">
+  <!--favicon-img-->
+
+  <link rel="stylesheet" href="../css/index.css">
+
+
+</head>
+
+<body>
+  <main id="blog-single">
+
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor scale"></div>
+    <div class="cursor-two scale"></div>
+    <!-- CUSTOM CURSOR -->
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+      <!-- <div class="p">
+                  <img src="images/headphone.png" alt="headphone">
+              </div> -->
+      <div class="p">RootMe</div>
+    </div>
+    <!-- PRELOADER -->
+
+
+    <div id="blog-single-content">
+
+      <!-- NAVIGATION -->
+      <div class="navigation">
+        <div class="logo hover ">
+          <a href="../index.html" class="text">Yashwardhan Laharia</a>
+        </div>
+        <div class="menu-bar hover ">
+          <div class="menu-bar-name text">
+            Menu
+          </div>
+          <div class="menu-bar-lines text">
+            <div class="menu-bar-line"></div>
+            <div class="menu-bar-line"></div>
+          </div>
+        </div>
+      </div>
+      <!-- NAVIGATION -->
+
+
+
+      <!-- HEADING -->
+      <div class="heading">
+        <div class="text">
+            RootMe
+        </div>
+      </div>
+
+      <!-- HEADING -->
+
+      <div class="center">
+
+
+        <!-- BLOG IMG -->
+        <div class="blog-img img">
+
+          <img src="../images/rootme/banner.png" alt="blog-img">
+
+        </div>
+        <!-- BLOG IMG -->
+
+
+
+        <div class="center-para">
+
+          <!-- BLOG TEXT -->
+          <div class="blog-text">
+
+
+            <!-- BLOG INFO -->
+
+            <div class="blog-info">
+              <div class="blog-date text-scroll"><a
+                  href="https://tryhackme.com/room/rrootme">https://tryhackme.com/room/rrootme</a></div>
+            </div>
+            <!-- BLOG INFO -->
+
+
+            <!-- BLOG HEADING -->
+            <div class="blog-heading text-scroll">
+                A ctf for beginners, can you root me?
+            </div>
+
+            <!-- BLOG HEADING -->
+
+<br>
+            <!-- PARAGRAPH -->
+            <div class="blog-sub-heading text-scroll">
+              Ennumeration
+            </div>
+            <!-- PARAGRAPH -->
+
+
+            <br>
+
+            <!-- PARAGRAPH -->
+            <div class="para text-scroll">
+              Let's run nmap for some basic ennumeration to get an idea for what we are working with.
+            </div>
+            <!-- PARAGRAPH -->
+            <br />
+            <div class="text-scroll">
+              <code>
+                nmap -sC -sV -T4 -v {ip} -oN nmap_scan
+            </code>
+            </div>
+            <br />
+            <div class="para text-scroll">
+              Which gives the following output:
+            </div>
+            <br />
+            <div class="text-scroll">
+              <pre><code>
+# Nmap 7.93 scan initiated Mon Jul 24 11:37:42 2023 as: nmap -sC -sV -T4 -v -oN nmap_scan 10.10.59.205
+Nmap scan report for 10.10.59.205
+Host is up (0.16s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 4ab9160884c25448ba5cfd3f225f2214 (RSA)
+|   256 a9a686e8ec96c3f003cd16d54973d082 (ECDSA)
+|_  256 22f6b5a654d9787c26035a95f3f9dfcd (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not set
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: HackIT - Home
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Jul 24 11:38:16 2023 -- 1 IP address (1 host up) scanned in 34.00 seconds
+                
+              </code></pre>
+            </div>
+            <br />
+
+            <div class="para text-scroll">
+              We have ports 22 and 80 open.
+            </div>
+
+            <br />
+
+            <div class="blog-sub-heading text-scroll">
+              Web Interface
+            </div>
+
+            <br>
+            <div class="text-scroll para">
+              Checking out the web interace on port 80, we are greeted with the following page
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/web_interface.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Checking the source code and nothing usable here
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/code.png" alt="img">
+              </div>
+            </div>
+
+            <br>
+            <div class="text-scroll para">
+              Let's run gobuster to find more directories on the web server.
+            </div>
+
+            <br>
+            <div class="text-scroll">
+              <!-- <pre> -->
+              <code>
+                  gobuster -u {ip} -w /usr/share/wordlists/dirb/common.txt dir -o dir_scan
+                </code>
+              <!-- </pre> -->
+            </div>
+
+            <br>
+            <div class="text-scroll para">
+              Which gives the following directories:
+            </div>
+
+            <br>
+            <div class="text-scroll">
+              <pre>
+                <code>
+/.hta                 (Status: 403) [Size: 277]
+/.htpasswd            (Status: 403) [Size: 277]
+/.htaccess            (Status: 403) [Size: 277]
+/css                  (Status: 301) [Size: 310] [--> http://10.10.59.205/css/]
+/index.php            (Status: 200) [Size: 616]                               
+/js                   (Status: 301) [Size: 309] [--> http://10.10.59.205/js/] 
+/panel                (Status: 301) [Size: 312] [--> http://10.10.59.205/panel/]
+/server-status        (Status: 403) [Size: 277]                                 
+/uploads              (Status: 301) [Size: 314] [--> http://10.10.59.205/uploads/]                                                            
+                </code>
+              </pre>
+            </div>
+
+            <br>
+            <div class="text-scroll para">
+              the /css directory contains simple css files and nothing of particular interest to us. the /js directory contains the javascript for the typewriter effect on the homepage. Directories of interest are /pannel and /uploads.
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/pannel.png" alt="img">
+              </div>
+              <div class="img-scroll">
+                <img src="../images/rootme/uploads.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+                There is potential for us to exploit the server via LFI (local file inclusion). We upload a reverse shell in /pannel and call (execute) it in the /uploads directory.
+            </div>
+
+            <div class="text-scroll para">
+                Downloading a <b><u><a href="https://pentestmonkey.net/tools/web-shells/php-reverse-shell">php reverse shell</a></u></b>
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/rev_shell.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+                Arming the script to call back to my ip on port 1234. Also starting a netcat listener for port 1234
+            </div>
+
+            <!-- IMAGES -->
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/arming.png" alt="img">
+              </div>
+              <div class="img-scroll">
+                <img src="../images/rootme/nc.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+                Uploading the file to the web server now
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/uploading_1.png" alt="img">
+              </div>
+            </div>
+
+
+
+            <div class="text-scroll para">
+              Upload resulted in the following error in Portugese Language, which translates to <b>PHP is not allowed!</b>. Let's modify the file to make the server accept the php file.
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/fail.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+                Let's try changing the file extension from .php to .phtml
+              </div>
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/phtml.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Success! Again Portugese message lol. It's translated to - The file has been successfully uploaded!
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/phtml_accept.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              We're in!!!!!!!!!!!!!!!!!!!!!!!!
+            </div>
+
+            <div class="blog-text-img">
+
+              <div class="img-scroll">
+                <img src="../images/rootme/shell.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Let's upgrade this shell to a fully interactive pty shell for ease of use
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/pty_setup_1.png" alt="img">
+              </div>
+            </div>
+            <div class="blog-text-img">
+                <div class="img-scroll">
+                  <img src="../images/rootme/pty_setup_2.png" alt="img">
+                </div>
+              </div>
+              <div class="blog-text-img">
+                <div class="img-scroll">
+                  <img src="../images/rootme/pty_setup_3.png" alt="img">
+                </div>
+              </div>
+              <div class="blog-text-img">
+                <div class="img-scroll">
+                  <img src="../images/rootme/pty_setup_4.png" alt="img">
+                </div>
+              </div>
+
+            <div class="text-scroll para">
+              And now we have a completely interactive shell!<br>Onto finding the flags now, namely the user.txt file.
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/find_1.png" alt="img">
+              </div>
+              <div class="img-scroll">
+                <img src="../images/rootme/find_2.png" alt="img">
+              </div>
+            </div>
+
+            <div class="blog-text-img">
+                <div class="img-scroll">
+                  <img src="../images/rootme/user.png" alt="img">
+                </div>
+              </div>
+
+            <div class="text-scroll para">
+              We need to privesc to root now. I've moved to the /dev/shm/ directory to run linpeas.sh there to ennumerate the box for vulnerabilities.
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/linp.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+              Python is set as SUID, we can exploit this to gain root
+            </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/privesc.png" alt="img">
+              </div>
+            </div>
+
+            <div class="text-scroll para">
+                We have root!!!
+              </div>
+
+            <div class="blog-text-img">
+              <div class="img-scroll">
+                <img src="../images/rootme/root.png" alt="img">
+              </div>
+            </div>
+
+            <br>
+            <div class="blog-sub-heading text-scroll" tag="Answers">
+              <u><a href="https://tryhackme.com/room/rrootme">Answers</a></u>
+            </div>
+            <br>
+            <div class="text-scroll para">
+
+
+              <pre>
+<b>Scan the machine, how many ports are open? </b>
+2
+
+<b>What version of Apache is running?</b>
+2.4.29
+
+<b>What service is running on port 22?</b>
+SSH
+
+<b>What is the hidden directory?</b>
+/panel/
+
+<hr>
+<b>user.txt</b>
+THM{y0u_g0t_a_sh3ll}
+
+<hr>
+<b>Search for files with SUID permission, which file is weird?</b>
+/usr/bin/python
+
+<b>root.txt</b>
+THM{pr1v1l3g3_3sc4l4t10n}
+</pre>
+
+            </div>
+
+            <div class="signature">
+              <span class="text-scroll">&nbsp;&nbsp;&nbsp;Yashwardhan</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+
+
+
+
+
+      <!-- HEADPHONE IMG -->
+      <!-- <div class="headphone img text">
+    <img src="images/headphone.png" title="headphone zone" class="text" alt="headphone">
+  </div> -->
+      <!-- HEADPHONE IMG -->
+
+
+
+      <!-- progress-bar -->
+      <div class="progress-bar-container fade-in">
+        <div class="progressbar"></div>
+      </div>
+      <!-- progress-bar -->
+
+    </div>
+
+
+
+
+    <!-- NAVIGATION CONTENT -->
+
+    <div class="navigation-content">
+      <div class="navigation-logo hover opacity">
+        <a href="#" class="text">&nbsp;&nbsp;&nbsp;Yashwardhan ~ 5pid3rh7ck3r</a>
+      </div>
+      <ul class="navigation-ul">
+        <li><a href="../index.html" data-text="Home" data-img="images/02background.gif">Home</a></li>
+        <li><a href="../about_me.html" data-text="About Me" data-img="images/about_page_img.jpg">About Me</a></li>
+        <li><a href="../my_projects.html" data-text="Projects" data-img="images/projects_bg.jpg">Projects</a></li>
+        <li><a href="../my_blogs.html" data-text="Blogs" data-img="images/Blog_img.jpg">Blogs</a></li>
+        <li><a href="../contact-one.html" data-text="Contact" data-img="images/yellow_city.jpg">Contact</a>
+        </li>
+      </ul>
+      <div class="navigation-close hover about-close opacity">
+        <div class="navigation-close-line"></div>
+        <div class="navigation-close-line"></div>
+      </div>
+
+      <div class="project-preview"></div>
+
+
+      <!-- HEADPHONE IMG -->
+      <!-- <div class="headphone-navigation opacity">
+        <img src="../images/headphone.png" title="headphone zone" class="text" alt="headphone">
+      </div> -->
+      <!-- HEADPHONE IMG -->
+
+
+      <!-- SOCIAL MEDIA LINKS -->
+      <!-- <div class="social-media-links-navigation">
+        <ul>
+          <li><a href="#" class="text hover opacity">YT</a></li>
+          <li><a href="#" class="text hover opacity">FB</a></li>
+          <li><a href="#" class="text hover opacity">IG</a></li>
+        </ul>
+      </div> -->
+      <!-- SOCIAL MEDIA LINKS -->
+
+    </div>
+
+    <!-- NAVIGATION CONTENT -->
+
+
+
+
+
+  </main>
+
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bez.js"></script>
+  <script src="../js/pace.js"></script>
+  <script src="../js/index.js"></script>
+
+
+</body>
+
+</html>
